@@ -1,0 +1,25 @@
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - echo Restore started on `date`
+      - dotnet restore
+  build:
+    commands:
+      - echo Build started on `date`
+      
+      - echo Publishing service
+      - dotnet publish -o output
+
+      - echo Creating build folder
+      - mkdir build
+
+      - echo Copying files to build folder
+      - cp -R output build/output
+      - cp Dockerfile build/Dockerfile
+
+      - echo Done at `date`
+artifacts:
+  files:
+    - '**/*'
+  base-directory: build
