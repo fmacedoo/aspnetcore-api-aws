@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,7 +33,13 @@ namespace aspnetcore_api_aws
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Hello Elastic Beanstalk with Docker!");
+                    var response = new {
+                        title = "ASPNETCORE Application on Elastic Beanstalk",
+                        description = "Congratulations! You just created an aspnetcore application running on a Docker container at AWS Elastic Beanstalk and processed by AWS Pipelines.",
+                    };
+
+                    context.Response.Headers.Add("Content-Type", "application/json");
+                    await context.Response.WriteAsync(JsonSerializer.Serialize(response));
                 });
             });
         }
